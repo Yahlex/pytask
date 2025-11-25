@@ -89,17 +89,19 @@ class MainWindow(QMainWindow):
         self.btn_add = QPushButton("➕ Ajouter")
         self.btn_edit = QPushButton("✏️ Modifier")
         self.btn_delete = QPushButton("🗑️ Supprimer")
+        self.btn_close = QPushButton("✅ Clôturer")
         self.btn_change_state = QPushButton("🔄 Changer l'état")
         self.btn_comments = QPushButton("💬 Commentaires")
 
         self.btn_add.clicked.connect(self._on_add_task)
         self.btn_edit.clicked.connect(self._on_edit_task)
         self.btn_delete.clicked.connect(self._on_delete_task)
+        self.btn_close.clicked.connect(self._on_close_task) 
         self.btn_change_state.clicked.connect(self._on_change_state)
         self.btn_comments.clicked.connect(self._on_show_comments)
 
         for btn in [self.btn_add, self.btn_edit, self.btn_delete, 
-                    self.btn_change_state, self.btn_comments]:
+                    self.btn_change_state, self.btn_comments, self.btn_close]:
             btn_layout.addWidget(btn)
 
         btn_layout.addStretch()
@@ -325,7 +327,7 @@ class MainWindow(QMainWindow):
         )
 
         if ok and nouvel_etat:
-            # ✅ CORRECTION : Appel avec titre + description
+            # Appel avec titre + description
             self.task_ctrl.update_task(
                 task_id, 
                 titre=task.titre,
@@ -347,6 +349,33 @@ class MainWindow(QMainWindow):
         dialog = CommentView(self.comment_ctrl, task_id, parent=self)
         dialog.exec()
         self._load_tasks()
+    
+    def _on_close_task(self):
+        """Clôture rapide de la tâche sélectionnée"""
+        task_id = self._get_selected_task_id()
+        if not task_id:
+            return
+
+        task = self.task_ctrl.get_task_by_id(task_id)
+
+        if task.etat == "Réalisé":
+            QMessageBox.information(self, "ℹ️ Information", "Cette tâche est déjà clôturée.")
+            return
+
+        reply = QMessageBox.question(
+            self,
+            "❓ Confirmer la clôture",
+            f"Voulez-vous vraiment clôturer la tâche :\n\n« {task.titre} » ?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            try:
+                self.task_ctrl.close_task(task_id)
+                QMessageBox.information(self, "✅ Succès", "Tâche clôturée !")
+                self._load_tasks()
+            except ValueError as e:
+                QMessageBox.warning(self, "⚠️ Attention", str(e))
 
     def _on_row_double_clicked(self):
         """Double-clic = édition"""

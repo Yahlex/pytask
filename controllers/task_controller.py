@@ -10,6 +10,7 @@ from models.task import Task
 from models.repository import Repository
 
 
+
 class TaskController:
     """
     Contrôleur principal pour gérer les tâches
@@ -115,6 +116,25 @@ class TaskController:
         
         self.repository.update_task(task)
     
+    def close_task(self, task_id: int):
+        """ Clôture rapide d'une tâche """
+
+        task = self.repository.get_task_by_id(task_id)
+        if not task:
+            raise ValueError(f"Tâche #{task_id} introuvable")
+    
+    # Vérifier qu'elle n'est pas déjà clôturée
+        if task.etat == "Réalisé":
+            raise ValueError("Cette tâche est déjà clôturée")
+    
+    # Clôture
+        task.etat = "Réalisé"
+        task.date_fin = datetime.now()
+    
+        self.repository.update_task(task)
+
+
+
     def get_tasks_by_state(self, etat: str) -> List[Task]:
         """Filtre les tâches par état"""
         all_tasks = self.repository.get_all_tasks()

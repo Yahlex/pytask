@@ -39,14 +39,10 @@
   - [Relation 1-N (Task ↔ Comments)](#relation-1-n-task--comments)
 - [Difficultés rencontrées](#-difficultés-rencontrées)
   - [1. Configuration Git LFS](#1-configuration-git-lfs)
-  - [2. Certificat SSL auto-signé](#2-certificat-ssl-auto-signé)
-  - [3. Synchronisation des signaux Qt](#3-synchronisation-des-signaux-qt)
-  - [4. Gestion du mode sombre](#4-gestion-du-mode-sombre)
+  - [2. Synchronisation des signaux Qt](#3-synchronisation-des-signaux-qt)
+  - [3. Gestion du mode sombre](#4-gestion-du-mode-sombre)
 - [Améliorations futures](#-améliorations-futures)
-  - [Priorité haute (v2.0)](#priorité-haute-v20)
-  - [Priorité moyenne (v2.5)](#priorité-moyenne-v25)
-  - [Priorité basse (v3.0)](#priorité-basse-v30)
-- [Ressources et références](#-ressources-et-références)
+- [Ressources et références](#-ressources)
 - [Licence](#-licence)
 - [Auteur](#-auteur)
 - [Remerciements](#-remerciements)
@@ -73,29 +69,6 @@
 ✅ **Filtrage intelligent** : Aujourd'hui, Cette semaine, Ce mois  
 ✅ **Clôture de tâches** : Marquer une tâche comme terminée avec date automatique  
 ✅ **Interface moderne** : Mode sombre, responsive, intuitive  
-
----
-
-## 🖼️ Captures d'écran
-
-
-### Vue principale - Liste des tâches
-┌─────────────────────────────────────────────────────┐
-│  PyTask - Gestionnaire de Tâches          [─][□][×] │
-├─────────────────────────────────────────────────────┤
-│  [+ Nouvelle tâche]                                 │
-├─────────────────────────────────────────────────────┤
-│  📅 Aujourd'hui | Cette semaine | Ce mois          │
-├─────────────────────────────────────────────────────┤
-│  ☐ Titre de la tâche           [Modifier][Suppr]   │
-│     📝 Description courte...                        │
-│     🏷️ En cours | 📅 15/01/2025                     │
-│  ─────────────────────────────────────────────────  │
-│  ☑ Tâche terminée              [Modifier][Suppr]   │
-│     📝 Cette tâche est complète                     │
-│     🏷️ Réalisé | 📅 14/01/2025                      │
-└─────────────────────────────────────────────────────┘
-
 
 ---
 
@@ -260,7 +233,7 @@ PySide6>=6.6.0
 #### 4️⃣ Lancer l'application
 python main.py
 
-Sortie attendue :
+Sortie attendue : 
 🚀 Démarrage de l'application...
 ✅ Tables créées/vérifiées
 ✅ Base de données initialisée
@@ -336,41 +309,42 @@ Signaux → contrôleurs
 
 Aucun accès direct à SQLite
 
-## 🧠 Choix techniques & Justifications
+# 🧠 Choix techniques & Justifications
 
-# Architecture MVC stricte
+## Architecture MVC stricte
 
 ✔ Vues → pas de logique métier
 ✔ Contrôleurs → pas d'UI
 ✔ Models → indépendants et testables
 ✔ Code maintenable, propre et pédagogique
 
-# Gestion des dates
+### Gestion des dates
 
 Format interface → JJ/MM/AAAA
 Format BDD SQLite → YYYY-MM-DD
 
-## Vers SQLite
+#### Vers SQLite
 date_iso = datetime.strptime("15/01/2025", "%d/%m/%Y").date().isoformat()
 
-## Vers interface
+#### Vers interface
 date_fr = datetime.fromisoformat("2025-01-15").strftime("%d/%m/%Y")
 
 ### Gestion des erreurs (3 niveaux)
-1️⃣ Validation contrôleur
+
+#### 1️⃣ Validation contrôleur
 if not title.strip():
     raise ValueError("Le titre est obligatoire")
 
-### 2️⃣ Gestion UI
+#### 2️⃣ Gestion UI
 try:
     self.task_controller.create_task(...)
 except ValueError as e:
     QMessageBox.warning(self, "Erreur", str(e))
 
-3️⃣ Logging simple
+#### 3️⃣ Logging simple
 ❌ Erreur : Le titre est obligatoire
 
-🔗 Relation 1-N : Task ↔ Comments
+### 🔗 Relation 1-N : Task ↔ Comments
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     task_id INTEGER NOT NULL,
@@ -395,10 +369,11 @@ git add .gitattributes data/app.db
 
 
 ## 2️⃣ Rafraîchissement Qt (signaux)
-# TaskFormView
+
+### TaskFormView
 self.task_saved = Signal()
 
-# MainWindow
+### MainWindow
 form.task_saved.connect(self.refresh_tasks)
 
 ## 3️⃣ Mode sombre QSS
@@ -409,34 +384,22 @@ Stylesheet global appliqué sur QApplication
 
 # 🚀 Améliorations futures
 
-
-Notifications (échéances)
-
-Recherche
-
-Export PDF / CSV
-
-Tags / catégories
-
-Statistiques graphiques
-
-Thèmes personnalisables
-
-Synchronisation cloud
-
-Rappels récurrents
-
-Sous-tâches + drag & drop
+- Notifications (échéances)
+- Recherche
+- Export PDF / CSV
+- Tags / catégories
+- Statistiques graphiques
+- Thèmes personnalisables
+- Synchronisation cloud
+- Rappels récurrents
+- Sous-tâches + drag & drop
 
 # 📚 Ressources
 
-PySide6 Documentation
-
-SQLite Documentation
-
-PEP 8
-
-Git LFS Documentation
+- PySide6 Documentation
+- SQLite Documentation
+- PEP 8
+- Git LFS Documentation
 
 # 📜 Licence
 
