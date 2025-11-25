@@ -58,6 +58,7 @@ QTableWidget::item {
     padding: 10px;  /* ✅ Plus d'espace */
 }
 
+
 QTableWidget::item:focus {
     outline: none;
     border: none;

@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
     QComboBox, QMessageBox, QHeaderView, QTabWidget, QInputDialog
 )
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QBrush
 
 from controllers.task_controller import TaskController
 from controllers.comment_controller import CommentController
@@ -181,16 +181,6 @@ class MainWindow(QMainWindow):
             # Titre
             table.setItem(row, 1, QTableWidgetItem(task.titre))
 
-            # État
-            etat_item = QTableWidgetItem(task.etat)
-            if task.etat == "Réalisé":
-                etat_item.setForeground(QColor("#a6e3a1"))
-            elif task.etat == "En cours":
-                etat_item.setForeground(QColor("#89b4fa"))
-            else:
-                etat_item.setForeground(QColor("#f9e2af"))
-            table.setItem(row, 2, etat_item)
-
             # État avec émoji + couleur de fond
             etat_display = {
                 "À faire": "📝 À faire",
@@ -199,17 +189,21 @@ class MainWindow(QMainWindow):
                 }
 
             etat_item = QTableWidgetItem(etat_display.get(task.etat, task.etat))
+            etat_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
             if task.etat == "À faire":
-                etat_item.setBackground(QColor("#f38ba8"))  # Rouge vif
+                etat_item.setBackground(QColor("#AC1313"))  # Rouge vif
                 etat_item.setForeground(QColor("#1e1e2e"))  # Texte noir
+
             elif task.etat == "En cours":
-                etat_item.setBackground(QColor("#fab387"))  # Orange vif
+                etat_item.setBackground(QColor("#d86924"))  # Orange vif
                 etat_item.setForeground(QColor("#1e1e2e"))
+
             elif task.etat == "Réalisé":
-                etat_item.setBackground(QColor("#a6e3a1"))  # Vert vif
+                etat_item.setBackground(QColor("#32d124"))  # Vert vif
                 etat_item.setForeground(QColor("#1e1e2e"))
-            
+
+ 
             table.setItem(row, 2, etat_item)
 
             # Échéance
