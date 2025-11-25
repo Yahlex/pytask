@@ -28,10 +28,8 @@ class CommentView(QDialog):
         
         # Récupération de la tâche
         self.task = self.task_ctrl.get_task_by_id(task_id)
-        if not self.task:
-            QMessageBox.critical(self, "Erreur", "Tâche introuvable !")
-            self.reject()
-            return
+            
+       
         
         self.setWindowTitle(f"💬 Commentaires - {self.task.titre}")
         self.setModal(True)
@@ -138,7 +136,8 @@ class CommentView(QDialog):
             QMessageBox.information(self, "Succès", "✅ Commentaire ajouté !")
         except Exception as e:
             QMessageBox.critical(self, "Erreur", f"Erreur lors de l'ajout : {str(e)}")
-    
+
+
     def _on_delete_comment(self):
         """Supprime le commentaire sélectionné"""
         selected_item = self.comment_list.currentItem()

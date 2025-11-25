@@ -196,11 +196,11 @@ class MainWindow(QMainWindow):
                 etat_item.setForeground(QColor("#1e1e2e"))  # Texte noir
 
             elif task.etat == "En cours":
-                etat_item.setBackground(QColor("#d86924"))  # Orange vif
+                etat_item.setBackground(QColor("#b35419"))  # Orange vif
                 etat_item.setForeground(QColor("#1e1e2e"))
 
             elif task.etat == "Réalisé":
-                etat_item.setBackground(QColor("#32d124"))  # Vert vif
+                etat_item.setBackground(QColor("#16640f"))  # Vert vif
                 etat_item.setForeground(QColor("#1e1e2e"))
 
  
@@ -359,10 +359,12 @@ class MainWindow(QMainWindow):
 
     def _on_show_comments(self):
         """Affiche les commentaires de la tâche"""
+        print("🔍 _on_show_comments appelé")
+
         task_id = self._get_selected_task_id()
         if not task_id:
             return
-
+        
         from views.comment_view import CommentView
 
         dialog = CommentView(task_id, self.task_ctrl, self.comment_ctrl, parent=self)
