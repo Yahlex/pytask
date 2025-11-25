@@ -268,9 +268,6 @@ Sortie attendue :
 ✅ Contrôleurs créés
 ✅ Interface graphique lancée
 
-==================================================
-🎨 APPLICATION PRÊTE EN MODE SOMBRE !
-==================================================
 
 ## 📂 Structure du code
 pytask/
@@ -348,23 +345,23 @@ Aucun accès direct à SQLite
 ✔ Models → indépendants et testables
 ✔ Code maintenable, propre et pédagogique
 
-Gestion des dates
+# Gestion des dates
 
 Format interface → JJ/MM/AAAA
 Format BDD SQLite → YYYY-MM-DD
 
-# Vers SQLite
+## Vers SQLite
 date_iso = datetime.strptime("15/01/2025", "%d/%m/%Y").date().isoformat()
 
-# Vers interface
+## Vers interface
 date_fr = datetime.fromisoformat("2025-01-15").strftime("%d/%m/%Y")
 
-Gestion des erreurs (3 niveaux)
+### Gestion des erreurs (3 niveaux)
 1️⃣ Validation contrôleur
 if not title.strip():
     raise ValueError("Le titre est obligatoire")
 
-2️⃣ Gestion UI
+### 2️⃣ Gestion UI
 try:
     self.task_controller.create_task(...)
 except ValueError as e:
@@ -385,8 +382,9 @@ CREATE TABLE comments (
 
 👉 ON DELETE CASCADE : si une tâche est supprimée → tous ses commentaires aussi.
 
-🐛 Difficultés rencontrées
-1️⃣ Git LFS
+# 🐛 Difficultés rencontrées
+
+## 1️⃣ Git LFS
 
 Problème : base SQLite > 50 Mo
 Solution :
@@ -395,33 +393,22 @@ git lfs install
 git lfs track "*.db"
 git add .gitattributes data/app.db
 
-2️⃣ Certificat SSL auto-signé
 
-Solution temporaire :
-
-git config http.sslVerify false
-
-
-Solution recommandée :
-→ Passage en SSH avec GitHub
-
-3️⃣ Rafraîchissement Qt (signaux)
+## 2️⃣ Rafraîchissement Qt (signaux)
 # TaskFormView
 self.task_saved = Signal()
 
 # MainWindow
 form.task_saved.connect(self.refresh_tasks)
 
-4️⃣ Mode sombre QSS
-
-Palette cohérente
+## 3️⃣ Mode sombre QSS
 
 Contrastes adaptés
 
 Stylesheet global appliqué sur QApplication
 
-🚀 Améliorations futures
-🔥 Priorité haute (v2.0)
+# 🚀 Améliorations futures
+
 
 Notifications (échéances)
 
@@ -429,15 +416,11 @@ Recherche
 
 Export PDF / CSV
 
-⭐ Priorité moyenne (v2.5)
-
 Tags / catégories
 
 Statistiques graphiques
 
 Thèmes personnalisables
-
-🌐 Priorité basse (v3.0)
 
 Synchronisation cloud
 
@@ -445,7 +428,7 @@ Rappels récurrents
 
 Sous-tâches + drag & drop
 
-📚 Ressources
+# 📚 Ressources
 
 PySide6 Documentation
 
@@ -455,7 +438,7 @@ PEP 8
 
 Git LFS Documentation
 
-📜 Licence
+# 📜 Licence
 
 MIT License (c) 2025 – Alexis R.
 
