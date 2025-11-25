@@ -58,6 +58,11 @@ QTableWidget::item {
     padding: 10px;  /* ✅ Plus d'espace */
 }
 
+QTableWidget::item:focus {
+    outline: none;
+    border: none;
+}
+
 /* ✅ Survol : fond gris moyen + texte BLANC */
 QTableWidget::item:hover {
     background-color: #585b70;

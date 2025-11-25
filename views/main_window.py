@@ -34,7 +34,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("📋 Gestionnaire de Tâches Pro")
         self.setGeometry(100, 100, 1200, 700)
         
-        # ✅ APPLICATION DU STYLE
+        #  APPLICATION DU STYLE
         self.setStyleSheet(APP_STYLESHEET)
 
         self._setup_ui()
@@ -130,6 +130,10 @@ class MainWindow(QMainWindow):
         table.setAlternatingRowColors(True)
         table.verticalHeader().setVisible(False)
 
+         # ✅ DÉSACTIVER LE FOCUS MOCHE
+        table.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+
         # Double-clic pour éditer
         table.itemDoubleClicked.connect(self._on_row_double_clicked)
 
@@ -185,6 +189,27 @@ class MainWindow(QMainWindow):
                 etat_item.setForeground(QColor("#89b4fa"))
             else:
                 etat_item.setForeground(QColor("#f9e2af"))
+            table.setItem(row, 2, etat_item)
+
+            # État avec émoji + couleur de fond
+            etat_display = {
+                "À faire": "📝 À faire",
+                "En cours": "⚙️ En cours",
+                "Réalisé": "✅ Réalisé"
+                }
+
+            etat_item = QTableWidgetItem(etat_display.get(task.etat, task.etat))
+
+            if task.etat == "À faire":
+                etat_item.setBackground(QColor("#f38ba8"))  # Rouge vif
+                etat_item.setForeground(QColor("#1e1e2e"))  # Texte noir
+            elif task.etat == "En cours":
+                etat_item.setBackground(QColor("#fab387"))  # Orange vif
+                etat_item.setForeground(QColor("#1e1e2e"))
+            elif task.etat == "Réalisé":
+                etat_item.setBackground(QColor("#a6e3a1"))  # Vert vif
+                etat_item.setForeground(QColor("#1e1e2e"))
+            
             table.setItem(row, 2, etat_item)
 
             # Échéance
@@ -346,7 +371,7 @@ class MainWindow(QMainWindow):
 
         from views.comment_view import CommentView
 
-        dialog = CommentView(self.comment_ctrl, task_id, parent=self)
+        dialog = CommentView(task_id, self.task_ctrl, self.comment_ctrl, parent=self)
         dialog.exec()
         self._load_tasks()
     
